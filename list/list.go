@@ -3,7 +3,7 @@ package list
 import "fmt"
 
 type Element struct {
-	value interface{}
+	Value interface{}
 	prev  *Element
 	next  *Element
 }
@@ -20,7 +20,7 @@ func New() *List {
 
 func (l *List) Append(value interface{}) {
 	node := &Element{
-		value: value,
+		Value: value,
 	}
 	if l.size == 0 {
 		l.head = node
@@ -38,7 +38,7 @@ func (l *List) Append(value interface{}) {
 
 func (l *List) Prepend(value interface{}) {
 	node := &Element{
-		value: value,
+		Value: value,
 	}
 	if l.size == 0 {
 		l.head = node
@@ -68,15 +68,15 @@ func (l *List) Len() int {
 
 func (l *List) Print() {
 	for e := l.First(); e != nil; e = e.Next() {
-		fmt.Println(e.value)
+		fmt.Println(e.Value)
 	}
 }
 
 func (l *List) Remove(e *Element) interface{} {
-	if e.IsFirst() {
+	if e.isFirst() {
 		l.head = e.next
 		e.next.prev = nil
-	} else if e.IsLast() {
+	} else if e.isLast() {
 		l.tail = e.prev
 		e.prev.next = nil
 	} else {
@@ -84,16 +84,12 @@ func (l *List) Remove(e *Element) interface{} {
 		e.next.prev = e.prev
 	}
 	l.size--
-	return e.value
-}
-
-func (l *List) Size() int {
-	return l.size
+	return e.Value
 }
 
 func (l *List) InsertAfter(value interface{}, e *Element) *Element {
 	node := &Element{
-		value: value,
+		Value: value,
 	}
 	node.prev = e
 	node.next = e.next
@@ -105,7 +101,7 @@ func (l *List) InsertAfter(value interface{}, e *Element) *Element {
 
 func (l *List) InsertBefore(value interface{}, e *Element) *Element {
 	node := &Element{
-		value: value,
+		Value: value,
 	}
 	node.prev = e.prev
 	node.next = e
@@ -116,23 +112,23 @@ func (l *List) InsertBefore(value interface{}, e *Element) *Element {
 }
 
 func (e *Element) Next() *Element {
-	if e.next != nil {
-		return e.next
+	if e.isLast() {
+		return nil
 	}
-	return nil
+	return e.next
 }
 
 func (e *Element) Prev() *Element {
-	if e.prev != nil {
-		return e.Prev()
+	if e.isFirst() {
+		return nil
 	}
-	return e
+	return e.prev
 }
 
-func (e *Element) IsLast() bool {
+func (e *Element) isLast() bool {
 	return e.next == nil
 }
 
-func (e *Element) IsFirst() bool {
+func (e *Element) isFirst() bool {
 	return e.prev == nil
 }

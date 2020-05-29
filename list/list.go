@@ -73,15 +73,20 @@ func (l *List) Print() {
 }
 
 func (l *List) Remove(e *Element) interface{} {
-	if e.isFirst() {
-		l.head = e.next
-		e.next.prev = nil
-	} else if e.isLast() {
-		l.tail = e.prev
-		e.prev.next = nil
+	if l.size == 1 {
+		l.head = nil
+		l.tail = nil
 	} else {
-		e.prev.next = e.next
-		e.next.prev = e.prev
+		if e.isFirst() {
+			l.head = e.next
+			e.next.prev = nil
+		} else if e.isLast() {
+			l.tail = e.prev
+			e.prev.next = nil
+		} else {
+			e.prev.next = e.next
+			e.next.prev = e.prev
+		}
 	}
 	l.size--
 	return e.Value

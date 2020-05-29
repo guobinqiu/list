@@ -11,5 +11,8 @@ func main() {
 
 	l.Remove(l.First())
 
-	l.Print()
+	l.Prepend(3)
+
+	l.Print() //expect: 3 2
 }
+
